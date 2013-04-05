@@ -1,6 +1,7 @@
 """ Unit Tests for searching """
 import unittest
 from ..searching import binary_search, kmp_search, rabinkarp_search, bmh_search, depth_first_search
+from ..searching.breadth_first_search import bfs
 
 
 class TestBinarySearch(unittest.TestCase):
@@ -132,3 +133,28 @@ class TestDepthFirstSearch(unittest.TestCase):
         self.assertEqual(rv7, [10, 3, 1, 2, 4, 11, 12, 7, 8, 9, 5, 13, 14, 15, 6])
         self.assertEqual(rv8, [5, 1, 2, 4, 11, 12, 7, 8, 9, 10, 3, 6, 15, 13, 14])
         self.assertEqual(rv3e, None)
+
+class TestBreadthFirstSearch(unittest.TestCase):
+    """
+    Tests DFS on a graph represented by a adjacency list
+    """
+
+    def test_bfs(self):
+        self.graph = {'A':['B','D','G'],
+                     'B':['A','E','F'],
+                     'C':['F','H'],
+                     'D':['A','F'],
+                     'E':['B','G'],
+                     'F':['B','C','D'],
+                     'G':['A','E'],
+                     'H':['C']}
+        rv1 = bfs(self.graph,'A','A')
+        rv2 = bfs(self.graph,'E','X')
+        rv3 = bfs(self.graph,'B','C')
+        rv4 = bfs(self.graph,'A','F')
+        rv5 = bfs(self.graph,'H','G')
+        self.assertEqual(rv1,[])
+        self.assertEqual(rv2,"Node X is not in the graph.")
+        self.assertEqual(rv3,['B', 'A', 'E', 'F', 'D', 'G'])
+        self.assertEqual(rv4,['A', 'B', 'D', 'G', 'E'])
+        self.assertEqual(rv5,['H', 'C', 'F', 'B', 'D', 'A', 'E'])
